@@ -1,3 +1,9 @@
+# Typescript Compiler output
+lib/
+
+# SQLite database files
+*.sqlite3
+
 # Logs
 logs
 *.log
