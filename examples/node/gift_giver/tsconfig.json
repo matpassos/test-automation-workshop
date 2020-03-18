@@ -2,19 +2,13 @@
   "compilerOptions": {
     "allowSyntheticDefaultImports": true,
     "baseUrl": "./src",
-    "declaration": true,
     "forceConsistentCasingInFileNames": true,
     "lib": ["ESNext"],
-    "module": "ESNext",
     "moduleResolution": "node",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "outDir": "./lib",
-    "plugins": [{ "transform": "ts-transformer-imports" }],
-    "sourceMap": true,
-    "sourceRoot": "./src",
-    "target": "ESNext"
+    "plugins": [{ "transform": "ts-transformer-imports" }]
   },
-  "include": ["src"],
+  "include": ["src", "tests"],
   "exclude": ["node_modules"]
 }

@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "scripts": {
     "start": "node lib/index.js",
-    "watch": "ttsc -w",
-    "build": "ttsc",
+    "watch": "ttsc --project tsconfig.build.json -w",
+    "build": "ttsc --project tsconfig.build.json",
     "lint": "tslint -c tslint.json 'src/**/*'",
     "test": "yarn test:unit && yarn test:integration && yarn test:contract",
     "test:env": "NODE_ENV=test",
@@ -26,6 +26,7 @@
     "eslint": "^6.8.0",
     "jest": "^25.1.0",
     "supertest": "^4.0.2",
+    "testdouble": "^3.13.1",
     "ts-jest": "^25.2.1",
     "ts-transformer-imports": "^0.4.3",
     "tslint": "^6.1.0",
