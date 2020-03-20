@@ -1,15 +1,19 @@
 import * as express from 'express'
-import database from 'config/database'
+import { Express } from 'express'
+import database, { Database } from 'config/database'
+import attendeesRoutes from 'attendees/attendees.routes'
 
-const app = express()
+export interface App extends Express {
+  database: Database
+}
+
+const app = express() as App
+app.database = database()
 
 app.set('port', process.env.PORT || 4242)
 
-app.get('/attendees', (_, res) => {
-  database()
-    .models.Attendees.findAll()
-    .then(attendees => res.json(attendees))
-    .catch(() => res.status(500))
-})
+app.use(express.json())
+
+attendeesRoutes(app)
 
 export default app

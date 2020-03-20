@@ -15,8 +15,6 @@ const configs: {
   },
   test: {
     database: 'gift_giver',
-    username: '',
-    password: '',
     dialect: 'sqlite',
     storage: ':memory:',
     define: {
