@@ -1,4 +1,6 @@
-import app from 'app'
+import createApp from 'app'
+
+const app = createApp()
 
 app.listen(app.get('port'), () => {
   // tslint:disable-next-line: no-console

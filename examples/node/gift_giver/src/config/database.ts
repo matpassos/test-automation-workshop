@@ -1,6 +1,6 @@
 import { Sequelize } from 'sequelize'
 import configs from './config'
-import attendees, { Attendees } from 'attendees/attendees.model'
+import { Attendees, createAttendees } from 'attendees'
 
 export type Database = {
   sequelize: Sequelize
@@ -9,28 +9,25 @@ export type Database = {
   }
 }
 
-let database: Database = null
-
 export default () => {
-  if (!database) {
-    const env = process.env.NODE_ENV || 'development'
+  const env = process.env.NODE_ENV || 'development'
 
-    const sequelize = new Sequelize({
-      ...configs[env],
-      define: {
-        createdAt: 'created_at',
-        updatedAt: 'updated_at',
-      },
-    })
+  const sequelize = new Sequelize({
+    ...configs[env],
+    define: {
+      createdAt: 'created_at',
+      updatedAt: 'updated_at',
+    },
+  })
 
-    database = {
-      sequelize,
-      models: {
-        Attendees: attendees(sequelize),
-      },
-    }
-
-    sequelize.sync().done(() => database)
+  const database: Database = {
+    sequelize,
+    models: {
+      Attendees: createAttendees(sequelize),
+    },
   }
+
+  sequelize.sync().done(() => database)
+
   return database
 }

@@ -1,5 +1,5 @@
 import { App } from 'app'
-import AttendeesController from 'attendees/attendees.controller'
+import { AttendeesController } from 'attendees'
 
 export default (app: App) => {
   const controller = new AttendeesController(app.database.models.Attendees)

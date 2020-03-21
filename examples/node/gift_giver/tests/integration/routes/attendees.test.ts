@@ -1,10 +1,8 @@
-import * as HttpStatus from 'http-status-codes'
-import * as supertest from 'supertest'
-import * as td from 'testdouble'
-import app from 'app'
-import { Attendee } from 'attendees/attendees.model'
+import createAppEnv from '../../createAppEnv'
+import { HttpStatus, td } from '../../helpers'
+import { Attendee } from 'attendees'
 
-const request = supertest(app)
+const { app, request } = createAppEnv()
 
 describe('attendees routes', () => {
   const { Attendees } = app.database.models
@@ -28,24 +26,30 @@ describe('attendees routes', () => {
 
   describe('GET /attendees', () => {
     it('should return a list of attendees', done => {
+      const expectedAttendees = [defaultAttendee]
+
       request.get('/attendees').end((_err, res) => {
-        res.body.map((received: Attendee) => {
-          const expected = defaultAttendee
+        const receivedAttendees: Attendee[] = res.body
+
+        expect(receivedAttendees.length).toBe(expectedAttendees.length)
+
+        receivedAttendees.forEach((received, i) => {
+          const expected = expectedAttendees[i]
 
           expect([
-            expected.id,
-            expected.awarded,
-            expected.image_url,
-            expected.name,
-            expected.rsvp_answer,
-            expected.vendor_user_id,
-          ]).toEqual([
             received.id,
             received.awarded,
             received.image_url,
             received.name,
             received.rsvp_answer,
             received.vendor_user_id,
+          ]).toEqual([
+            expected.id,
+            expected.awarded,
+            expected.image_url,
+            expected.name,
+            expected.rsvp_answer,
+            expected.vendor_user_id,
           ])
 
           expect(received.created_at).toBeTruthy()
@@ -63,13 +67,11 @@ describe('attendees routes', () => {
 
       td.when(Attendees.findAll()).thenReject(expectedError)
 
-      request
-        .get('/attendees')
-        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
-        .on('error', err =>
-          expect(err.response.body.message).toBe(expectedError.message)
-        )
-        .end(() => done())
+      request.get('/attendees').end((_err, res) => {
+        expect(res.body.message).toBe(expectedError.message)
+        expect(res.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR)
+        done()
+      })
     })
   })
 })

@@ -6,11 +6,12 @@
     "watch": "ttsc --project tsconfig.build.json -w",
     "build": "ttsc --project tsconfig.build.json",
     "lint": "tslint -c tslint.json 'src/**/*'",
-    "test": "yarn test:unit && yarn test:integration && yarn test:contract",
+    "test": "yarn test:env jest --watch",
     "test:env": "NODE_ENV=test",
-    "test:integration": "yarn test:env jest --coverage tests/integration/**/*.ts",
-    "test:unit": "yarn test:env jest --coverage tests/unit/**/*.ts",
-    "test:contract": "yarn test:env jest --coverage tests/contract/**/*.ts"
+    "test:all": "yarn test:env jest --coverage tests/*/**/*.test.ts",
+    "test:unit": "yarn test:env jest --coverage tests/unit/**/*.test.ts",
+    "test:contract": "yarn test:env jest --coverage tests/contract/**/*.test.ts",
+    "test:integration": "yarn test:env jest --coverage tests/integration/**/*.test.ts"
   },
   "dependencies": {
     "express": "^4.17.1",

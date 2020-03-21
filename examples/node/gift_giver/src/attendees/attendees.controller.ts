@@ -1,5 +1,5 @@
 import * as HttpStatus from 'http-status-codes'
-import { Attendees, Attendee } from 'attendees/attendees.model'
+import { Attendees } from 'attendees'
 
 const defaultResponse = <T>(data: T, statusCode = HttpStatus.OK) => ({
   data,
@@ -18,16 +18,12 @@ const errorResponse = (
   )
 
 export default class AttendeesController {
-  private attendees: Attendees
-
-  constructor(attendees: Attendees) {
-    this.attendees = attendees
-  }
+  constructor(private attendees: Attendees) {}
 
   getAll() {
     return this.attendees
       .findAll()
-      .then((attendees: Attendee[]) => defaultResponse(attendees))
+      .then(attendees => defaultResponse(attendees))
       .catch(error => errorResponse(error.message))
   }
 }

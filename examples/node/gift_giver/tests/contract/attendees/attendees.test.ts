@@ -1,12 +1,8 @@
-import * as HttpStatus from 'http-status-codes'
-import * as Joi from 'joi'
-import * as JoiAssert from 'joi-assert'
-import * as supertest from 'supertest'
-import * as td from 'testdouble'
-import app from 'app'
-import { Attendee } from 'attendees/attendees.model'
+import createAppEnv from '../../createAppEnv'
+import { HttpStatus, Joi, JoiAssert, td } from '../../helpers'
+import { Attendee } from 'attendees'
 
-const request = supertest(app)
+const { app, request } = createAppEnv()
 
 describe('attendees routes', () => {
   const { Attendees } = app.database.models
@@ -37,23 +33,28 @@ describe('attendees routes', () => {
     updated_at: new Date(),
   }
 
-  beforeEach(done => {
-    Attendees.destroy({ where: {} })
-      .then(() => Attendees.create(defaultAttendee))
-      .then(() => done())
-  })
-
   describe('GET /attendees', () => {
+    const originalFindAll = Attendees.findAll
+
+    beforeEach(done => {
+      Attendees.destroy({ where: {} })
+        .then(() => Attendees.create(defaultAttendee))
+        .then(() => done())
+    })
+
+    afterEach(done => {
+      Attendees.findAll = originalFindAll
+      Attendees.destroy({ where: {} }).then(() => done())
+    })
+
     it('should return a list of attendees', done => {
       const attendeesListContract = Joi.array().items(attendeeContract)
 
-      request
-        .get('/attendees')
-        .expect(HttpStatus.OK)
-        .end((_err, res) => {
-          JoiAssert(res.body, attendeesListContract)
-          done()
-        })
+      request.get('/attendees').end((_err, res) => {
+        JoiAssert(res.body, attendeesListContract)
+        expect(res.status).toBe(HttpStatus.OK)
+        done()
+      })
     })
 
     it('should return an error', done => {
@@ -62,14 +63,13 @@ describe('attendees routes', () => {
       })
 
       Attendees.findAll = td.function() as any
-
       td.when(Attendees.findAll()).thenReject(new Error('error message'))
 
-      request
-        .get('/attendees')
-        .expect(HttpStatus.INTERNAL_SERVER_ERROR)
-        .on('error', err => JoiAssert(err.response.body, errorContract))
-        .end(() => done())
+      request.get('/attendees').end((_err, res) => {
+        JoiAssert(res.body, errorContract)
+        expect(res.status).toBe(HttpStatus.INTERNAL_SERVER_ERROR)
+        done()
+      })
     })
   })
 })

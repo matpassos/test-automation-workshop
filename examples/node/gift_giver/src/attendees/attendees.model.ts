@@ -1,7 +1,7 @@
 import { DataTypes, Model, Sequelize, BuildOptions } from 'sequelize'
 
 export interface Attendee {
-  id?: number
+  id: number
   awarded: boolean
   image_url: string | null
   name: string
