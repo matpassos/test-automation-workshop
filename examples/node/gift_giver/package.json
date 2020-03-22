@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "scripts": {
     "postinstall": "patch-package",
-    "heroku-prebuild": "patch-package",
+    "heroku-prebuild": "yarn patch-package",
     "start": "node build/index.js",
     "watch": "ttsc --project tsconfig.build.json -w",
     "build": "ttsc --project tsconfig.build.json",
