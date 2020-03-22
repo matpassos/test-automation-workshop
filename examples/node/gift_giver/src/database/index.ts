@@ -1,5 +1,4 @@
-import { Sequelize } from 'sequelize'
-import configs from './config'
+import { Sequelize, Options } from 'sequelize'
 import { Attendees, createAttendees } from 'attendees'
 
 export type Database = {
@@ -9,16 +8,8 @@ export type Database = {
   }
 }
 
-export default () => {
-  const env = process.env.NODE_ENV || 'development'
-
-  const sequelize = new Sequelize({
-    ...configs[env],
-    define: {
-      createdAt: 'created_at',
-      updatedAt: 'updated_at',
-    },
-  })
+export default (config: Options) => {
+  const sequelize = new Sequelize(config)
 
   const database: Database = {
     sequelize,

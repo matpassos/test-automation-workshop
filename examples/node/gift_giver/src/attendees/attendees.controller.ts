@@ -1,4 +1,4 @@
-import * as HttpStatus from 'http-status-codes'
+import HttpStatus from 'http-status-codes'
 import { Attendees } from 'attendees'
 
 const defaultResponse = <T>(data: T, statusCode = HttpStatus.OK) => ({

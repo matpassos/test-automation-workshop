@@ -1,4 +1,4 @@
-import createAppEnv from '../../createAppEnv'
+import createAppEnv from '../../create-app-env'
 import { HttpStatus, td } from '../../helpers'
 import { Attendee } from 'attendees'
 

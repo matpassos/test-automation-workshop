@@ -1,16 +1,20 @@
-import * as express from 'express'
-import createDatabase, { Database } from 'config/database'
+import express, { Express } from 'express'
+import createDatabaseConfig from 'database/config'
+import createDatabase, { Database } from 'database'
 import { attendeesRoutes } from 'attendees'
 
-export interface App extends express.Express {
+export interface App extends Express {
   database: Database
 }
 
 const createApp = () => {
-  const app = express() as App
-  app.database = createDatabase()
+  const envFile = process.env.NODE_ENV ? `.env.${process.env.NODE_ENV}` : '.env'
+  require('dotenv').config({ path: envFile })
 
-  app.set('port', process.env.PORT || 4242)
+  const app = express() as App
+
+  app.database = createDatabase(createDatabaseConfig())
+  app.set('port', process.env.PORT)
 
   app.use(express.json())
 

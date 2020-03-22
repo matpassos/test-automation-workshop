@@ -1,5 +1,5 @@
 # Typescript Compiler output
-lib/
+build/
 
 # SQLite database files
 *.sqlite3

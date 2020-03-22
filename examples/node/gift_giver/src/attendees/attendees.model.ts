@@ -18,10 +18,15 @@ export type Attendees = typeof Model &
 
 export default (sequelize: Sequelize) =>
   sequelize.define('attendees', {
+    id: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      autoIncrement: true,
+      primaryKey: true,
+    },
     awarded: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
-      defaultValue: false,
     },
     image_url: {
       type: DataTypes.STRING,
