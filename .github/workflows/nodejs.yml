@@ -32,3 +32,5 @@ jobs:
       working-directory: examples/node/gift_giver
       env:
         CI: true
+        DB_STORAGE: ":memory:"
+        DB_DIALECT: sqlite
