@@ -25,8 +25,11 @@ jobs:
       with:
         node-version: ${{ matrix.node-version }}
     - run: yarn
+      working-directory: examples/node/gift_giver
     - run: yarn build
+      working-directory: examples/node/gift_giver
     - run: yarn test:all
+      working-directory: examples/node/gift_giver
       env:
         CI: true
         DB_STORAGE: ":memory:"
